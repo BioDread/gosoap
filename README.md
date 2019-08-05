@@ -1,7 +1,7 @@
 # Go Soap [![Build Status](https://travis-ci.org/tiaguinho/gosoap.svg?branch=master)](https://travis-ci.org/tiaguinho/gosoap) [![GoDoc](https://godoc.org/github.com/tiaguinho/gosoap?status.png)](https://godoc.org/github.com/tiaguinho/gosoap) [![Go Report Card](https://goreportcard.com/badge/github.com/tiaguinho/gosoap)](https://goreportcard.com/report/github.com/tiaguinho/gosoap) [![codecov](https://codecov.io/gh/tiaguinho/gosoap/branch/master/graph/badge.svg)](https://codecov.io/gh/tiaguinho/gosoap) [![patreon](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://www.patreon.com/temporin)
 package to help with SOAP integrations (client)
 
-Mellat soap bug fix
+Mellat soap bug (fix)
 
 به علت نبودن نیم اسپیس بانک ملت در مسیر تعیین شده در نمونه اصلی این کتابخانه به مشکل ایندکس اووت آو رنج برخواهید خورد که فورک گرفته شده این مشکل حل شده است 
 
