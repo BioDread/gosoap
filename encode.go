@@ -2,9 +2,11 @@ package gosoap
 
 import (
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"reflect"
 )
+
 
 // MarshalXML envelope the body and encode to xml
 func (c process) MarshalXML(e *xml.Encoder, _ xml.StartElement) error {
@@ -24,7 +26,18 @@ func (c process) MarshalXML(e *xml.Encoder, _ xml.StartElement) error {
 		tokens.endHeader(c.Client.HeaderName)
 	}
 
-	err := tokens.startBody(c.Request.Method, c.Client.Definitions.Types[0].XsdSchema[0].TargetNamespace)
+	err := errors.New("")
+
+	// get mellat nameSpace
+	if MellatFix{
+		err = tokens.startBody(c.Request.Method, c.Client.Definitions.Imports[0].Namespace)
+
+	}else
+	{
+		err = tokens.startBody(c.Request.Method, c.Client.Definitions.Types[0].XsdSchema[0].TargetNamespace)
+
+	}
+
 	if err != nil {
 		return err
 	}
@@ -57,9 +70,15 @@ func (tokens *tokenData) recursiveEncode(hm interface{}) {
 		for _, key := range v.MapKeys() {
 			t := xml.StartElement{
 				Name: xml.Name{
-					Space: "",
 					Local: key.String(),
 				},
+			}
+
+			if MellatFix {
+				t.Name.Space = "biodread"
+			}else
+			{
+				t.Name.Space = ""
 			}
 
 			tokens.data = append(tokens.data, t)

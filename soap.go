@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -15,6 +16,7 @@ import (
 	"golang.org/x/net/html/charset"
 )
 
+var MellatFix bool
 // HeaderParams holds params specific to the header
 type HeaderParams map[string]interface{}
 
@@ -23,6 +25,11 @@ type Params map[string]interface{}
 
 // SoapClient return new *Client to handle the requests with the WSDL
 func SoapClient(wsdl string) (*Client, error) {
+
+	if wsdl == "https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl"{
+		MellatFix = true
+	}
+
 	_, err := url.Parse(wsdl)
 	if err != nil {
 		return nil, err
@@ -89,6 +96,7 @@ func (c *Client) initWsdl() {
 }
 
 func (c *Client) SetWSDL(wsdl string) {
+
 	c.onRequest.Wait()
 	c.onDefinitionsRefresh.Wait()
 	c.onRequest.Add(1)
@@ -177,6 +185,14 @@ type process struct {
 // doRequest makes new request to the server using the c.Method, c.URL and the body.
 // body is enveloped in Do method
 func (p *process) doRequest(url string) ([]byte, error) {
+
+	payloadString := string(p.Payload)
+
+	var re = regexp.MustCompile(`(^|[^_])\bbiodread\b([^_]|$)`)
+	payloadString = re.ReplaceAllString(payloadString, `""`)
+
+	p.Payload = []byte(payloadString)
+
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(p.Payload))
 	if err != nil {
 		return nil, err
