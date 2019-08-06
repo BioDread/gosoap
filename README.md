@@ -20,7 +20,7 @@ import (
 	"encoding/xml"
 	"log"
 
-	"github.com/tiaguinho/gosoap"
+	"github.com/BioDread/gosoap"
 )
 
 // GetIPLocationResponse will hold the Soap response
